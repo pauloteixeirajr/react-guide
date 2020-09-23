@@ -1,5 +1,6 @@
 import React from 'react';
 import './Person.css';
+import Radium from 'radium';
 
 const person = (props) => {
   // props.children outputs everything between the opening/closing tags
@@ -14,4 +15,4 @@ const person = (props) => {
   );
 };
 
-export default person;
+export default Radium(person);
