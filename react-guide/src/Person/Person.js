@@ -3,9 +3,14 @@ import './Person.css';
 import Radium from 'radium';
 
 const person = (props) => {
+  const style = {
+    '@media (min-width: 500px)': {
+      width: '450px',
+    },
+  };
   // props.children outputs everything between the opening/closing tags
   return (
-    <div className="Person">
+    <div className="Person" style={style}>
       <p onClick={props.click}>
         I'm a {props.name} and I am {props.age} years old!
       </p>
