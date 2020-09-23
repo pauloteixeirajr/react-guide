@@ -162,6 +162,7 @@ module.exports = {
                 options: {
                   importLoaders: 1,
                   modules: true,
+                  // Compiled class name pattern
                   localIdentName: '[name]__[local]__[hash:base64:5]',
                 },
               },

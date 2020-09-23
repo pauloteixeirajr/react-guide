@@ -181,6 +181,7 @@ module.exports = {
                         minimize: true,
                         sourceMap: shouldUseSourceMap,
                         modules: true,
+                        // Compiled class name pattern
                         localIdentName: '[name]__[local]__[hash:base64:5]',
                       },
                     },
