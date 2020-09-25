@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classes from './Cockpit.css';
 
 const cockpit = (props) => {
+  useEffect(
+    () => setTimeout(() => alert('Saved data to the cloud'), 1000),
+    // Leave the array empty to trigger only when the component loads
+    [props.persons]
+  );
+
   const assignedClasses = [];
   let btnClass = '';
 
