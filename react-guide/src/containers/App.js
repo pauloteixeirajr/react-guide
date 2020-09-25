@@ -13,6 +13,7 @@ class App extends Component {
       { id: '789', name: 'Stephanie', age: 26 },
     ],
     showPersons: false,
+    changeCounter: 0,
   };
 
   nameChangedHandler = (event, id) => {
@@ -26,7 +27,12 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({ persons });
+    this.setState((prevState, props) => {
+      return {
+        persons,
+        changeCounter: prevState.changeCounter + 1,
+      };
+    });
   };
 
   togglePersonsHandler = () => {
