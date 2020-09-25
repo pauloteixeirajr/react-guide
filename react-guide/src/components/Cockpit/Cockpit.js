@@ -3,7 +3,13 @@ import classes from './Cockpit.css';
 
 const cockpit = (props) => {
   useEffect(
-    () => setTimeout(() => alert('Saved data to the cloud'), 1000),
+    () => {
+      const timeout = setTimeout(() => alert('Saved data to the cloud'), 1000);
+      return () => {
+        // Do some clean up work before the component unmount
+        clearTimeout(timeout);
+      };
+    },
     // Leave the array empty to trigger only when the component loads
     [props.persons]
   );
