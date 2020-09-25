@@ -1,18 +1,18 @@
 import React from 'react';
 import classes from './Person.css';
-import WithClass from '../../../hoc/WithClass';
+import withClass from '../../../hoc/withClass';
 
 const person = (props) => {
   // props.children outputs everything between the opening/closing tags
   return (
-    <WithClass classes={classes.Person}>
+    <div>
       <p onClick={props.click}>
         I'm a {props.name} and I am {props.age} years old!
       </p>
       <p>{props.children}</p>
       <input type="text" onChange={props.changed} value={props.name} />
-    </WithClass>
+    </div>
   );
 };
 
-export default person;
+export default withClass(person, classes.Person);
