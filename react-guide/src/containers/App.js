@@ -4,6 +4,7 @@ import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
   state = {
@@ -14,6 +15,7 @@ class App extends Component {
     ],
     showPersons: false,
     changeCounter: 0,
+    authenticated: false,
   };
 
   nameChangedHandler = (event, id) => {
@@ -47,6 +49,12 @@ class App extends Component {
     this.setState({ persons });
   };
 
+  loginHandler = () => {
+    this.setState({
+      authenticated: true,
+    });
+  };
+
   render() {
     let persons = null;
 
@@ -61,7 +69,12 @@ class App extends Component {
     }
 
     return (
-      <div>
+      <AuthContext.Provider
+        value={{
+          authenticated: this.state.authenticated,
+          login: this.loginHandler,
+        }}
+      >
         <Cockpit
           title={this.props.appTitle}
           persons={this.state.persons}
@@ -69,7 +82,7 @@ class App extends Component {
           clicked={this.togglePersonsHandler}
         />
         {persons}
-      </div>
+      </AuthContext.Provider>
     );
   }
 }
