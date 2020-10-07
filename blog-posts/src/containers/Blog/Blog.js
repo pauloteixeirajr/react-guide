@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import './Blog.css';
 
 import Posts from '../Posts/Posts';
+import NewPost from '../NewPost/NewPost';
 
 class Blog extends Component {
   state = {
     posts: [],
-    selectedPost: null,
   };
 
   render() {
@@ -24,7 +25,8 @@ class Blog extends Component {
             </ul>
           </nav>
         </header>
-        <Posts />
+        <Route path="/" component={Posts} exact />
+        <Route path="/new-post" component={NewPost} />
       </div>
     );
   }
