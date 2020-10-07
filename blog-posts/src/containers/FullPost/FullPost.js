@@ -8,13 +8,14 @@ class FullPost extends Component {
     loadedPost: null,
   };
 
-  componentDidUpdate() {
-    if (this.props.id) {
+  componentDidMount() {
+    const postId = this.props.match.params.id;
+    if (postId) {
       if (this.state.loadedPost && this.state.loadedPost.id === this.props.id) {
         return;
       }
       axios
-        .get(`https://jsonplaceholder.typicode.com/posts/${this.props.id}`)
+        .get(`https://jsonplaceholder.typicode.com/posts/${postId}`)
         .then((response) => {
           this.setState({ loadedPost: response.data });
         })
@@ -36,7 +37,7 @@ class FullPost extends Component {
     if (this.props.id) {
       post = <p style={{ textAlign: 'center' }}>Loading</p>;
     }
-    if (this.props.id && this.state.loadedPost) {
+    if (this.state.loadedPost) {
       post = (
         <div className="FullPost">
           <h1>{this.state.loadedPost.title}</h1>
