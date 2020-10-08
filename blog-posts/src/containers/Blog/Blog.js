@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, NavLink } from 'react-router-dom';
+import { Route, NavLink, Switch } from 'react-router-dom';
 import './Blog.css';
 
 import Posts from '../Posts/Posts';
@@ -29,8 +29,13 @@ class Blog extends Component {
           </nav>
         </header>
         <Route path="/" component={Posts} exact />
-        <Route path="/new-post" component={NewPost} />
-        <Route path="/:id" component={FullPost} exact />
+        <Switch>
+          <Route path="/new-post" component={NewPost} />
+          {
+            // :id should be last (order is important)
+          }
+          <Route path="/:id" component={FullPost} exact />
+        </Switch>
       </div>
     );
   }
