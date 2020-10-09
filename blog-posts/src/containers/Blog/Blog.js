@@ -3,7 +3,7 @@ import { Route, NavLink, Switch } from 'react-router-dom';
 import './Blog.css';
 
 import Posts from '../Posts/Posts';
-import FullPost from '../FullPost/FullPost';
+
 import NewPost from '../NewPost/NewPost';
 
 class Blog extends Component {
@@ -19,7 +19,7 @@ class Blog extends Component {
             <ul>
               <li>
                 <NavLink to="/" exact>
-                  Home
+                  Posts
                 </NavLink>
               </li>
               <li>
@@ -28,13 +28,9 @@ class Blog extends Component {
             </ul>
           </nav>
         </header>
-        <Route path="/" component={Posts} exact />
         <Switch>
           <Route path="/new-post" component={NewPost} />
-          {
-            // :id should be last (order is important)
-          }
-          <Route path="/:id" component={FullPost} exact />
+          <Route path="/" component={Posts} />
         </Switch>
       </div>
     );
