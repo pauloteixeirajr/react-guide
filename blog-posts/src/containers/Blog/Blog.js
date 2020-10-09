@@ -8,7 +8,7 @@ import NewPost from '../NewPost/NewPost';
 
 class Blog extends Component {
   state = {
-    posts: [],
+    auth: false
   };
 
   render() {
@@ -29,9 +29,9 @@ class Blog extends Component {
           </nav>
         </header>
         <Switch>
-          <Route path="/new-post" component={NewPost} />
-          <Route path="/" component={Posts} />
-          <Redirect from="/" to="/posts" />
+          {this.state.auth ? <Route path="/new-post" component={NewPost} /> : null}
+          <Route path="/" exact component={Posts} />
+          <Redirect from="/posts" to="/" />
         </Switch>
       </div>
     );
