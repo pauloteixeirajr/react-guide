@@ -73,9 +73,19 @@ class BurgerBuilder extends Component {
     this.setState({ loading: true });
     this.props.history.push({
       pathname: '/checkout',
-      search: '?' + Object.keys(this.state.ingredients).map(key => {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(this.state.ingredients[key]);
-      }).join('&')
+      search:
+        '?price=' +
+        this.state.totalPrice +
+        '&' +
+        Object.keys(this.state.ingredients)
+          .map((key) => {
+            return (
+              encodeURIComponent(key) +
+              '=' +
+              encodeURIComponent(this.state.ingredients[key])
+            );
+          })
+          .join('&'),
     });
   };
 
