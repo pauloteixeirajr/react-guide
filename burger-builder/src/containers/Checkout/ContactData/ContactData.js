@@ -69,10 +69,12 @@ class ContactData extends Component {
           ],
         },
         value: 'fastest',
-        valid: false,
-        touched: false,
+        validation: {},
+        valid: true,
+        touched: true,
       },
     },
+    formIsValid: false,
     price: 0,
     loading: false,
   };
@@ -110,12 +112,19 @@ class ContactData extends Component {
     formEl.touched = true;
     formEl.valid = this.checkValidity(formEl.value, formEl.validation);
     form[inputIdentifier] = formEl;
-    console.log(formEl);
-    this.setState({ orderForm: form });
+
+    let formIsValid = true;
+
+    for (const input in form) {
+      formIsValid = form[input].valid && formIsValid;
+    }
+
+    this.setState({ orderForm: form, formIsValid });
   };
 
   checkValidity(value, rules) {
     let isValid = true;
+
     if (rules.required) {
       isValid = value.trim() !== '' && isValid;
     }
@@ -155,7 +164,9 @@ class ContactData extends Component {
               invalid={!el.config.valid}
             />
           ))}
-          <Button btnType="Success">ORDER</Button>
+          <Button btnType="Success" disabled={!this.state.formIsValid}>
+            ORDER
+          </Button>
         </form>
       </div>
     );
