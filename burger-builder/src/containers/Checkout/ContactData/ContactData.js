@@ -16,6 +16,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       email: {
         elementType: 'input',
@@ -25,6 +26,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       street: {
         elementType: 'input',
@@ -34,6 +36,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       postalCode: {
         elementType: 'input',
@@ -45,6 +48,7 @@ class ContactData extends Component {
           maxLength: 5,
         },
         valid: false,
+        touched: false,
       },
       country: {
         elementType: 'input',
@@ -54,6 +58,7 @@ class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: 'select',
@@ -64,6 +69,8 @@ class ContactData extends Component {
           ],
         },
         value: 'fastest',
+        valid: false,
+        touched: false,
       },
     },
     price: 0,
@@ -100,6 +107,7 @@ class ContactData extends Component {
     const form = { ...this.state.orderForm };
     const formEl = { ...form[inputIdentifier] };
     formEl.value = event.target.value;
+    formEl.touched = true;
     formEl.valid = this.checkValidity(formEl.value, formEl.validation);
     form[inputIdentifier] = formEl;
     console.log(formEl);
@@ -142,6 +150,9 @@ class ContactData extends Component {
               elementType={el.config.elementType}
               elementConfig={el.config.elementConfig}
               value={el.config.value}
+              shouldValidate={el.config.validation}
+              touched={el.config.touched}
+              invalid={!el.config.valid}
             />
           ))}
           <Button btnType="Success">ORDER</Button>
