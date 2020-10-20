@@ -17,9 +17,17 @@ const rootReducer = combineReducers({
 const logger = (store) => {
   return (next) => {
     return (action) => {
-      console.log('[Middleware] Dispatching', action);
+      console.log(
+        '%c[Middleware] Dispatching Action',
+        'color: #bada55',
+        action
+      );
       const result = next(action);
-      console.log('[Middleware] next state', store.getState());
+      console.log(
+        '%c[Middleware] next state',
+        'color: #bada55',
+        store.getState()
+      );
       return result;
     };
   };
