@@ -11,7 +11,7 @@ import {
   subtract,
   storeResult,
   deleteResult,
-} from '../../store/actions/actions';
+} from '../../store/actions/index';
 
 class Counter extends Component {
   render() {
