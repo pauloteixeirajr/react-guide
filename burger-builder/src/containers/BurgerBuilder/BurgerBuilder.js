@@ -37,16 +37,7 @@ class BurgerBuilder extends Component {
     this.props.history.push('/checkout');
   };
 
-  componentDidMount() {
-    // axios
-    //   .get('/ingredients.json')
-    //   .then((resp) => {
-    //     this.setState({ ingredients: resp.data });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ error: true });
-    //   });
-  }
+  componentDidMount() {}
 
   render() {
     const disabledInfo = {
@@ -85,9 +76,6 @@ class BurgerBuilder extends Component {
           purchaseContinued={this.purchaseContinueHandler}
         />
       );
-    }
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
     }
     return (
       <Aux>
