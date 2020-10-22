@@ -23,7 +23,7 @@ export const purchaseBurgerStart = (orderData) => {
       .then((response) => {
         dispatch(purchaseBurgerSuccess(response.data, orderData));
       })
-      .catch((err) => {
+      .catch((error) => {
         dispatch(purchaseBurgerFail(error));
       });
   };
