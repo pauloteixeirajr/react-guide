@@ -83,7 +83,6 @@ export const auth = (email, password, isSignUp) => {
         returnSecureToken: true,
       })
       .then((response) => {
-        console.log(response);
         const { idToken, localId, expiresIn } = response.data;
         const expirationDate = Date.now() + expiresIn * 1000;
         localStorage.setItem('token', idToken);
@@ -93,7 +92,6 @@ export const auth = (email, password, isSignUp) => {
         dispatch(checkAuthTimeout(expiresIn));
       })
       .catch((err) => {
-        console.log(err);
         dispatch(authFail(err.response.data.error));
       });
   };

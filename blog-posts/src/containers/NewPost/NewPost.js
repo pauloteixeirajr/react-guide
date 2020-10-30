@@ -18,8 +18,7 @@ class NewPost extends Component {
     };
     axios
       .post('https://jsonplaceholder.typicode.com/posts', post)
-      .then((response) => {
-        console.log(response);
+      .then((_) => {
         this.props.history.push('/posts');
         // this.props.history.replace('/posts');
       })

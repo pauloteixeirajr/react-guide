@@ -11,7 +11,7 @@ class FullPost extends Component {
   componentDidMount() {
     this.loadData();
   }
-  
+
   componentDidUpdate() {
     this.loadData();
   }
@@ -33,10 +33,9 @@ class FullPost extends Component {
 
   deletePostHandler = () => {
     axios
-      .delete(`https://jsonplaceholder.typicode.com/posts/${this.props.match.params.id}`)
-      .then((response) => {
-        console.log(response);
-      })
+      .delete(
+        `https://jsonplaceholder.typicode.com/posts/${this.props.match.params.id}`
+      )
       .catch(console.log);
   };
 
