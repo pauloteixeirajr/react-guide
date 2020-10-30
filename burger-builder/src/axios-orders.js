@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'https://burger.firebaseio.com/',
+  baseURL: process.env.BASE_URL,
 });

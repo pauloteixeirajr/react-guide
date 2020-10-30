@@ -68,7 +68,7 @@ export const auth = (email, password, isSignUp) => {
   return (dispatch) => {
     // ...
     dispatch(authStart());
-    const apiKey = '[API_KEY]';
+    const apiKey = process.env.FIREBASE_API;
     let url =
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + apiKey;
     if (!isSignUp) {
