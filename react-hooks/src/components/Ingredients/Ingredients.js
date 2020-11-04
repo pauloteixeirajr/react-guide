@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API } from '../../.next/api';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -8,10 +9,23 @@ const Ingredients = () => {
   const [ingredients, setIngredients] = useState([]);
 
   const addIngredientHandler = (ingredient) => {
-    setIngredients((prevIngredients) => [
-      ...prevIngredients,
-      { id: Math.random().toString(), ...ingredient },
-    ]);
+    fetch(API, {
+      method: 'POST',
+      body: JSON.stringify(ingredient),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setIngredients((prevIngredients) => [
+          ...prevIngredients,
+          // data.name comes from Firebase (as the UID)
+          { id: data.name, ...ingredient },
+        ]);
+      });
   };
 
   const removeIngredientHandler = (ingredientId) => {
