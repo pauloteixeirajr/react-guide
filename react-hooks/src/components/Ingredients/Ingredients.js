@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { API } from '../../.next/api';
 
 import IngredientForm from './IngredientForm';
@@ -8,6 +8,22 @@ import Search from './Search';
 const Ingredients = () => {
   const [ingredients, setIngredients] = useState([]);
 
+  useEffect(() => {
+    fetch(API)
+      .then((response) => response.json())
+      .then((data) => {
+        const loadedIngredients = [];
+        for (const key in data) {
+          loadedIngredients.push({
+            id: key,
+            ...data[key],
+          });
+        }
+        setIngredients(loadedIngredients);
+        console.table(loadedIngredients);
+      });
+  }, []);
+
   const addIngredientHandler = (ingredient) => {
     fetch(API, {
       method: 'POST',
@@ -16,9 +32,7 @@ const Ingredients = () => {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         setIngredients((prevIngredients) => [
           ...prevIngredients,
