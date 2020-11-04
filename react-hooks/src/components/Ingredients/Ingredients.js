@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { API } from '../../.next/api';
 
 import IngredientForm from './IngredientForm';
@@ -8,20 +8,8 @@ import Search from './Search';
 const Ingredients = () => {
   const [ingredients, setIngredients] = useState([]);
 
-  useEffect(() => {
-    fetch(API)
-      .then((response) => response.json())
-      .then((data) => {
-        const loadedIngredients = [];
-        for (const key in data) {
-          loadedIngredients.push({
-            id: key,
-            ...data[key],
-          });
-        }
-        setIngredients(loadedIngredients);
-        console.table(loadedIngredients);
-      });
+  const filteredIngredientsHandler = useCallback((ingredients) => {
+    setIngredients(ingredients);
   }, []);
 
   const addIngredientHandler = (ingredient) => {
@@ -53,7 +41,7 @@ const Ingredients = () => {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
         <IngredientList
           ingredients={ingredients}
           onRemoveItem={removeIngredientHandler}
