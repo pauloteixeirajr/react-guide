@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from 'react';
+import React, { useReducer, useCallback, useMemo } from 'react';
 import { API, BASE, ENTITY } from '../../.next/api';
 
 import IngredientForm from './IngredientForm';
@@ -45,7 +45,7 @@ const Ingredients = () => {
     dispatch({ type: 'SET', ingredients });
   }, []);
 
-  const addIngredientHandler = (ingredient) => {
+  const addIngredientHandler = useCallback((ingredient) => {
     dispatchHttp({ type: 'SEND' });
     fetch(API, {
       method: 'POST',
@@ -62,9 +62,9 @@ const Ingredients = () => {
       .catch((err) => {
         dispatchHttp({ type: 'ERROR', error: err.message });
       });
-  };
+  }, []);
 
-  const removeIngredientHandler = (ingredientId) => {
+  const removeIngredientHandler = useCallback((ingredientId) => {
     dispatchHttp({ type: 'SEND' });
     fetch(`${BASE}${ENTITY}/${ingredientId}.json`, {
       method: 'DELETE',
@@ -76,11 +76,20 @@ const Ingredients = () => {
       .catch((err) => {
         dispatchHttp({ type: 'ERROR', error: err.message });
       });
-  };
+  }, []);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatchHttp({ type: 'CLEAR' });
-  };
+  }, []);
+
+  const ingredientsList = useMemo(() => {
+    return (
+      <IngredientList
+        ingredients={ingredients}
+        onRemoveItem={removeIngredientHandler}
+      />
+    );
+  }, [ingredients, removeIngredientHandler]);
 
   return (
     <div className="App">
@@ -94,10 +103,7 @@ const Ingredients = () => {
 
       <section>
         <Search onLoadIngredients={filteredIngredientsHandler} />
-        <IngredientList
-          ingredients={ingredients}
-          onRemoveItem={removeIngredientHandler}
-        />
+        {ingredientsList}
       </section>
     </div>
   );
