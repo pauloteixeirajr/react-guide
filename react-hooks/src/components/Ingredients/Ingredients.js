@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useCallback } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import { API, BASE, ENTITY } from '../../.next/api';
 
 import IngredientForm from './IngredientForm';
@@ -19,18 +19,34 @@ const ingredientReducer = (state, action) => {
   }
 };
 
+const httpReducer = (state, action) => {
+  switch (action.type) {
+    case 'SEND':
+      return { loading: true, error: null };
+    case 'RESPONSE':
+      return { ...state, loading: false };
+    case 'ERROR':
+      return { loading: false, error: action.error };
+    case 'CLEAR':
+      return { ...state, error: null };
+    default:
+      throw new Error('Should not reach');
+  }
+};
+
 const Ingredients = () => {
   const [ingredients, dispatch] = useReducer(ingredientReducer, []);
-  // const [ingredients, setIngredients] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [httpState, dispatchHttp] = useReducer(httpReducer, {
+    loading: false,
+    error: null,
+  });
 
   const filteredIngredientsHandler = useCallback((ingredients) => {
     dispatch({ type: 'SET', ingredients });
   }, []);
 
   const addIngredientHandler = (ingredient) => {
-    setIsLoading(true);
+    dispatchHttp({ type: 'SEND' });
     fetch(API, {
       method: 'POST',
       body: JSON.stringify(ingredient),
@@ -40,41 +56,40 @@ const Ingredients = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setIsLoading(false);
+        dispatchHttp({ type: 'RESPONSE' });
         dispatch({ type: 'ADD', ingredient: { id: data.name, ...ingredient } });
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err.message);
+        dispatchHttp({ type: 'ERROR', error: err.message });
       });
   };
 
   const removeIngredientHandler = (ingredientId) => {
-    setIsLoading(true);
+    dispatchHttp({ type: 'SEND' });
     fetch(`${BASE}${ENTITY}/${ingredientId}.json`, {
       method: 'DELETE',
     })
       .then(() => {
-        setIsLoading(false);
+        dispatchHttp({ type: 'RESPONSE' });
         dispatch({ type: 'DELETE', id: ingredientId });
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err.message);
+        dispatchHttp({ type: 'ERROR', error: err.message });
       });
   };
 
   const clearError = () => {
-    setIsLoading(false);
-    setError(null);
+    dispatchHttp({ type: 'CLEAR' });
   };
 
   return (
     <div className="App">
-      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
+      {httpState.error && (
+        <ErrorModal onClose={clearError}>{httpState.error}</ErrorModal>
+      )}
       <IngredientForm
         onAddIngredient={addIngredientHandler}
-        loading={isLoading}
+        loading={httpState.loading}
       />
 
       <section>
