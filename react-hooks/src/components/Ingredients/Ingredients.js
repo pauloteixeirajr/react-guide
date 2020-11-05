@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useReducer, useState, useCallback } from 'react';
 import { API, BASE, ENTITY } from '../../.next/api';
 
 import IngredientForm from './IngredientForm';
@@ -6,13 +6,27 @@ import IngredientList from './IngredientList';
 import ErrorModal from '../UI/ErrorModal';
 import Search from './Search';
 
+const ingredientReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET':
+      return action.ingredients;
+    case 'ADD':
+      return [...state, action.ingredient];
+    case 'DELETE':
+      return state.filter((ing) => ing.id !== action.id);
+    default:
+      throw new Error('Should not reach');
+  }
+};
+
 const Ingredients = () => {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, dispatch] = useReducer(ingredientReducer, []);
+  // const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const filteredIngredientsHandler = useCallback((ingredients) => {
-    setIngredients(ingredients);
+    dispatch({ type: 'SET', ingredients });
   }, []);
 
   const addIngredientHandler = (ingredient) => {
@@ -27,11 +41,7 @@ const Ingredients = () => {
       .then((response) => response.json())
       .then((data) => {
         setIsLoading(false);
-        setIngredients((prevIngredients) => [
-          ...prevIngredients,
-          // data.name comes from Firebase (as the UID)
-          { id: data.name, ...ingredient },
-        ]);
+        dispatch({ type: 'ADD', ingredient: { id: data.name, ...ingredient } });
       })
       .catch((err) => {
         setIsLoading(false);
@@ -46,9 +56,7 @@ const Ingredients = () => {
     })
       .then(() => {
         setIsLoading(false);
-        setIngredients((prevIngredients) =>
-          prevIngredients.filter((ingredient) => ingredient.id !== ingredientId)
-        );
+        dispatch({ type: 'DELETE', id: ingredientId });
       })
       .catch((err) => {
         setIsLoading(false);
