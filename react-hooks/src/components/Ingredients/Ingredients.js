@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { API } from '../../.next/api';
+import { API, BASE, ENTITY } from '../../.next/api';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -31,9 +31,13 @@ const Ingredients = () => {
   };
 
   const removeIngredientHandler = (ingredientId) => {
-    setIngredients((prevIngredients) =>
-      prevIngredients.filter((ingredient) => ingredient.id !== ingredientId)
-    );
+    fetch(`${BASE}${ENTITY}/${ingredientId}.json`, {
+      method: 'DELETE',
+    }).then(() => {
+      setIngredients((prevIngredients) =>
+        prevIngredients.filter((ingredient) => ingredient.id !== ingredientId)
+      );
+    });
   };
 
   return (
