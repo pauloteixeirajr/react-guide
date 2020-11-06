@@ -35,6 +35,10 @@ export const useHttp = () => {
     identifier: null,
   });
 
+  const clear = useCallback(() => {
+    dispatch({ type: 'CLEAR' });
+  }, []);
+
   const sendRequest = useCallback((url, method, body, extra, identifier) => {
     dispatch({ type: 'SEND', identifier });
     fetch(url, {
@@ -53,5 +57,5 @@ export const useHttp = () => {
       });
   }, []);
 
-  return { ...httpState, sendRequest };
+  return { ...httpState, sendRequest, clear };
 };

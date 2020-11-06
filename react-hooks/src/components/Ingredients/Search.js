@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { API } from '../../.next/api';
+import { useHttp } from '../../hooks/http';
 
 import Card from '../UI/Card';
+import ErrorModal from '../UI/ErrorModal';
 import './Search.css';
 
 const Search = React.memo((props) => {
@@ -9,35 +11,41 @@ const Search = React.memo((props) => {
   const { onLoadIngredients } = props;
   const inputRef = useRef();
 
+  const { loading, data, error, sendRequest, clear } = useHttp();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (filter === inputRef.current.value) {
         const query =
           filter.length === 0 ? '' : `?orderBy="title"&equalTo="${filter}"`;
-        fetch(API + query)
-          .then((response) => response.json())
-          .then((data) => {
-            const loadedIngredients = [];
-            for (const key in data) {
-              loadedIngredients.push({
-                id: key,
-                ...data[key],
-              });
-            }
-            onLoadIngredients(loadedIngredients);
-          });
+        sendRequest(API + query, 'GET');
       }
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [filter, onLoadIngredients, inputRef]);
+  }, [filter, inputRef, sendRequest]);
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      const loadedIngredients = [];
+      for (const key in data) {
+        loadedIngredients.push({
+          id: key,
+          ...data[key],
+        });
+      }
+      onLoadIngredients(loadedIngredients);
+    }
+  }, [data, loading, error, onLoadIngredients]);
 
   return (
     <section className="search">
+      {error && <ErrorModal onClose={clear}>{error}</ErrorModal>}
       <Card>
         <div className="search-input">
           <label>Filter by Title</label>
+          {loading && <span>Loading...</span>}
           <input
             ref={inputRef}
             type="text"
