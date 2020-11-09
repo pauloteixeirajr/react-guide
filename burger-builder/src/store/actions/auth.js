@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
+import { firebase } from '../../.env/firebase';
 
 export const authStart = () => {
   return {
@@ -68,7 +69,7 @@ export const auth = (email, password, isSignUp) => {
   return (dispatch) => {
     // ...
     dispatch(authStart());
-    const apiKey = process.env.FIREBASE_API;
+    const apiKey = firebase.apiKey;
     let url =
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + apiKey;
     if (!isSignUp) {

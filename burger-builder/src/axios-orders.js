@@ -1,5 +1,6 @@
 import axios from 'axios';
+import { firebase } from './.env/firebase';
 
 export default axios.create({
-  baseURL: process.env.BASE_URL,
+  baseURL: firebase.baseUrl,
 });
