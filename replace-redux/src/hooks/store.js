@@ -4,7 +4,7 @@ let actions = [];
 let globalState = {};
 let listeners = [];
 
-const useStore = () => {
+export const useStore = () => {
   const setState = useState(globalState)[1];
 
   const dispatch = (action, payload) => {
