@@ -31,7 +31,7 @@ function App() {
       {expenses.map(expense => (
         <ExpenseItem
           key={expense.id}
-          date={expense.date.toISOString()}
+          date={expense.date}
           title={expense.title}
           amount={expense.amount}
         />
