@@ -5,7 +5,7 @@ import Button from '../../UI/Button/Button';
 
 import classes from './AddUser.module.css';
 
-const AddUser = () => {
+const AddUser = ({ onAddUser }) => {
   const [userName, setUserName] = useState('');
   const [userAge, setUserAge] = useState('');
 
@@ -17,7 +17,7 @@ const AddUser = () => {
     if (+userAge < 1) {
       return;
     }
-    console.log(userName, userAge);
+    onAddUser(userName, userAge);
     // Reset Form
     setUserName('');
     setUserAge('');
