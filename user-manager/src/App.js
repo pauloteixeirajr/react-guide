@@ -1,7 +1,7 @@
+import React from 'react';
 import { useState } from 'react';
 import AddUser from './components/Users/AddUser/AddUser';
 import UsersList from './components/Users/UsersList/UsersList';
-import Wrapper from './components/Helpers/Wrapper';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -19,10 +19,12 @@ function App() {
   };
 
   return (
-    <Wrapper>
+    // <> -> Is also a valid Fragment
+    <React.Fragment>
       <AddUser onAddUser={addUserHandler} />
       <UsersList users={users} />
-    </Wrapper>
+    </React.Fragment>
+    // </>
   );
 }
 
