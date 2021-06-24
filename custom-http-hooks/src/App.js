@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import Tasks from './components/Tasks/Tasks';
 import NewTask from './components/NewTask/NewTask';
@@ -7,7 +7,7 @@ import useHttp from './hooks/use-http';
 function App() {
   const [tasks, setTasks] = useState([]);
 
-  const transformTasks = tasks => {
+  const transformTasks = useCallback(tasks => {
     const loadedTasks = [];
 
     for (const taskKey in tasks) {
@@ -15,16 +15,15 @@ function App() {
     }
 
     setTasks(loadedTasks);
-  };
+  }, []);
 
-  const url =
-    'https://udemy-courses-4072a-default-rtdb.firebaseio.com/tasks.json';
-
-  const { isLoading, error, sendRequest } = useHttp({ url }, transformTasks);
+  const { isLoading, error, sendRequest } = useHttp(transformTasks);
 
   useEffect(() => {
-    sendRequest();
-  }, []);
+    const url =
+      'https://udemy-courses-4072a-default-rtdb.firebaseio.com/tasks.json';
+    sendRequest({ url });
+  }, [sendRequest]);
 
   const taskAddHandler = task => {
     setTasks(prevTasks => prevTasks.concat(task));
