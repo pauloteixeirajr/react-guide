@@ -8,6 +8,15 @@ const SimpleInput = () => {
   const nameInputChangeHandler = event => {
     setName(event.target.value);
     setNameTouched(true);
+
+    setIsNameValid(event.target.value.trim() !== '');
+  };
+
+  const nameInputBlurHandler = event => {
+    setNameTouched(true);
+    if (name.trim() === '') {
+      setIsNameValid(false);
+    }
   };
 
   const formSubmissionHandler = event => {
@@ -40,6 +49,7 @@ const SimpleInput = () => {
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
         />
         {nameInputIsInvalid && (
           <p className="error-text">Name must not be empty</p>
