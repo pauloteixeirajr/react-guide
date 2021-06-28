@@ -4,7 +4,7 @@ import classes from './Checkout.module.css';
 const isEmpty = value => value.trim() === '';
 const isFiveChars = value => value.trim().length > 4;
 
-const Checkout = ({ onCancel }) => {
+const Checkout = ({ onCancel, onConfirm }) => {
   const nameInput = useRef();
   const addressInput = useRef();
   const postalInput = useRef();
@@ -40,9 +40,14 @@ const Checkout = ({ onCancel }) => {
     const formIsValid =
       nameIsValid && addressIsValid && cityIsValid && postalIsValid;
 
-    if (!formIsValid) {
-      return;
-    }
+    if (!formIsValid) return;
+
+    onConfirm({
+      name,
+      address,
+      city,
+      postal,
+    });
   };
 
   const nameClasses = `${classes.control} ${
