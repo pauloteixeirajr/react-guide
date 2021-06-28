@@ -8,6 +8,7 @@ const url =
 
 const MealsList = () => {
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -24,12 +25,17 @@ const MealsList = () => {
         }
 
         setMeals(loadedMeals);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
     fetchMeals();
   }, []);
+
+  if (isLoading) {
+    return <section className={classes['meals-loading']}>Loading...</section>;
+  }
 
   const mealItems = meals.map(meal => (
     <MealItem
