@@ -9,11 +9,15 @@ const url =
 const MealsList = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMeals = async () => {
       try {
         const response = await fetch(url);
+
+        if (!response.ok) throw new Error('Something went wrong');
+
         const data = await response.json();
         const loadedMeals = [];
 
@@ -27,7 +31,8 @@ const MealsList = () => {
         setMeals(loadedMeals);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
+        setIsLoading(false);
+        setError(error.message);
       }
     };
     fetchMeals();
@@ -35,6 +40,10 @@ const MealsList = () => {
 
   if (isLoading) {
     return <section className={classes['meals-loading']}>Loading...</section>;
+  }
+
+  if (error) {
+    return <section className={classes['meals-error']}>{error}</section>;
   }
 
   const mealItems = meals.map(meal => (
